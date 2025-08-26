@@ -64,4 +64,20 @@ server.get("/timesheets", (request, response) => {
     })
 })
 
+server.get("/timesheets/:timesheet_id/line-items", (request, response) => {
+    const { timesheet_id } = request.params;
+
+    db.query(
+        "SELECT * FROM line_items WHERE timesheet_id = ?",
+        [timesheet_id],
+        (error, results) => {
+            if (error) {
+                return response.status(500).json(error);
+            }
+
+            return response.json(results);
+        }
+    );
+});
+
 server.listen(port, () => console.log(`Server running on port ${port}`));
