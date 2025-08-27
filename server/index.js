@@ -8,12 +8,11 @@ server.use(express.json());
 const port = 4000;
 
 const initDBTables = require('./initDBTables');
-const { databaseName, databasePassword, databaseHost, databaseUser } = require('./environmentVariables');
+const { databasePassword, databaseHost, databaseUser } = require('./environmentVariables');
 
 const db = mysql.createConnection({
     host: databaseHost,
     user: databaseUser,
-    database: databaseName,
     password: databasePassword
 });
 
