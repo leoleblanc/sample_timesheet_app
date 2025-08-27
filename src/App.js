@@ -11,15 +11,11 @@ function App() {
 
   useEffect(() => {
     fetch("http://localhost:4000/timesheets")
-      .then((response) => {
-        return response.json()
-      })
+      .then((response) => response.json())
       .then((timesheets) => {
         const fetchAllLineItems = timesheets.map((timesheet) => {
           return fetch(`http://localhost:4000/timesheets/${timesheet.id}/line-items`)
-            .then((response) => {
-              return response.json()
-            })
+            .then((response) => response.json())
             .then((timesheetLineItems) => {
               timesheet.lineItems = timesheetLineItems;
               return { ...timesheet, timesheetLineItems }
@@ -30,16 +26,12 @@ function App() {
             })
         })
 
-        Promise.all(fetchAllLineItems).then((updatedTimesheets) => {
-          setTimesheets(updatedTimesheets)
-        })
+        Promise.all(fetchAllLineItems).then((updatedTimesheets) => setTimesheets(updatedTimesheets))
       })
       .catch((error) => console.error("Error fetching timesheets:", error))
   }, [key]);
 
-  const reloadComponent = () => {
-    setKey(key + 1)
-  }
+  const reloadComponent = () => setKey(key + 1);
 
 
   const createTimesheet = (event) => {
@@ -58,10 +50,10 @@ function App() {
       .then((response) => response.json())
       .then((newTimesheet) => {
         setTimesheets([...timesheets, newTimesheet]);
-        setInitialLineItemDate("")
-        setInitialLineItemMinutes("")
-        setRate("")
-        setDescription("")
+        setInitialLineItemDate("");
+        setInitialLineItemMinutes("");
+        setRate("");
+        setDescription("");
         reloadComponent();
       })
       .catch((error) => console.error("Error creating timesheet:", error));
@@ -71,7 +63,7 @@ function App() {
     const { lineItems } = timesheet;
 
     if (!lineItems || lineItems.length === 0) {
-      return 0
+      return 0;
     }
 
     const summedTime = lineItems.reduce((totalTime, lineItem) => totalTime + lineItem.minutes, 0);

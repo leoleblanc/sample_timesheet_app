@@ -4,7 +4,7 @@ const mysql = require("mysql2");
 
 const server = express();
 server.use(cors());
-server.use(express.json())
+server.use(express.json());
 const port = 4000;
 
 const initDBTables = require('./initDBTables');
@@ -18,7 +18,7 @@ const db = mysql.createConnection({
 });
 
 try {
-    initDBTables(db)
+    initDBTables(db);
 } catch (error) {
     throw error;
 }
@@ -29,7 +29,7 @@ server.post("/timesheets", (request, response) => {
 
     db.beginTransaction((transactionError) => {
         if (transactionError) {
-            console.log('Error occurred during transaction')
+            console.log('Error occurred during transaction');
             return response.status(500).json(transactionError);
         }
 
@@ -50,16 +50,12 @@ server.post("/timesheets", (request, response) => {
                     [timesheetId, date, minutes],
                     (lineItemInsertionError, lineItemInsertionResult) => {
                         if (lineItemInsertionError) {
-                            return db.rollback(() => {
-                                return response.status(500).json(lineItemInsertionError);
-                            });
+                            return db.rollback(() => response.status(500).json(lineItemInsertionError));
                         }
 
                         db.commit((commitError) => {
                             if (commitError) {
-                                return db.rollback(() => {
-                                    response.status(500).json(commitError);
-                                });
+                                return db.rollback(() => response.status(500).json(commitError));
                             }
 
                             return response.json({
@@ -102,7 +98,7 @@ server.get("/timesheets", (request, response) => {
             return response.status(500).json(err);
         }
 
-        return response.json(data)
+        return response.json(data);
     })
 })
 

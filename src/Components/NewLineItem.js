@@ -18,9 +18,9 @@ const NewLineItem = (props) => {
                     body: JSON.stringify({ timesheet_id: timesheetID, date: lineItemDate, minutes: lineItemMinutes }),
                 })
                     .then((response) => response.json())
-                    .then((newLineItem) => {
-                        console.log('successfully added line item')
-                        onUpdate()
+                    .then(() => {
+                        console.log('successfully added line item');
+                        onUpdate();
                     })
                     .catch((error) => console.error("Error adding line item:", error));
             }}
