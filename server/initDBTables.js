@@ -10,8 +10,6 @@ const initDBTables = (db) => {
             id INT AUTO_INCREMENT PRIMARY KEY,
             description TEXT,
             rate DECIMAL(10,2) NOT NULL DEFAULT 1.00,
-            total_time INT DEFAULT 0,
-            total_cost DECIMAL(10,2) GENERATED ALWAYS AS (total_time * rate) STORED,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);`
     );
