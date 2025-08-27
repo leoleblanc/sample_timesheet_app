@@ -1,10 +1,4 @@
-const { databaseName } = require('./environmentVariables')
-
 const initDBTables = (db) => {
-    db.query(
-        `CREATE DATABASE IF NOT EXISTS ${databaseName};`
-    )
-
     db.query(
         `CREATE TABLE IF NOT EXISTS timesheets (
             id INT AUTO_INCREMENT PRIMARY KEY,
