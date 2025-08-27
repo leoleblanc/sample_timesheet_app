@@ -15,9 +15,9 @@ The test files included here are part of the create-react-app, I did not touch t
 2. Install MySQL. I used version 8.0.30 for MacOS on x86_64
 
 All instructions below assume operation from within the root directory, the same level as package.json.
-3. Create a file named `.env` in the root directory. Here, add two variables: DB_NAME=<YOUR_DB_NAME> and DB_PASSWORD=<YOUR_DB_PASSWORD>. These will be used by the server to connect to your MySQL database.
-4. run `npm install` to install all dependencies.
-5. run `npm run server` to start the server. This will initialize the tables for the database the first time the server boots up.
-6. run `npm run start`. This will start the frontend of the application, populating any timesheets that already exist.
+1. Create a file named `.env` in the root directory. Here, add two variables: DB_NAME=<YOUR_DB_NAME> and DB_PASSWORD=<YOUR_DB_PASSWORD>. These will be used by the server to connect to your MySQL database.
+2. run `npm install` to install all dependencies.
+3. run `npm run server` to start the server. This will initialize the tables for the database the first time the server boots up.
+4. run `npm run start`. This will start the frontend of the application, populating any timesheets that already exist.
 
 As updates are made to the timesheets, they are saved to the database, and users can come back later.
