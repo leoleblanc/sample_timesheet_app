@@ -6,6 +6,10 @@ const initDBTables = (db) => {
     )
 
     db.query(
+        `USE ${databaseName};`
+    )
+
+    db.query(
         `CREATE TABLE IF NOT EXISTS timesheets (
             id INT AUTO_INCREMENT PRIMARY KEY,
             description TEXT NOT NULL CHECK (LENGTH(description) > 0),
