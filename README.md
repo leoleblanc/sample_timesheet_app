@@ -19,3 +19,5 @@ All instructions below assume operation from within the root directory, the same
 4. run `npm install` to install all dependencies.
 5. run `npm run server` to start the server. This will initialize the tables for the database the first time the server boots up.
 6. run `npm run start`. This will start the frontend of the application, populating any timesheets that already exist.
+
+As updates are made to the timesheets, they are saved to the database, and users can come back later.
