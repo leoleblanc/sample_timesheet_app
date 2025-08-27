@@ -19,7 +19,6 @@ const NewLineItem = (props) => {
                 })
                     .then((response) => response.json())
                     .then(() => {
-                        console.log('successfully added line item');
                         onUpdate();
                     })
                     .catch((error) => console.error("Error adding line item:", error));
