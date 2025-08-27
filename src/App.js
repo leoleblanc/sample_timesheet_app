@@ -93,7 +93,8 @@ function App() {
     <div key={key} style={{
       paddingLeft: '1ch'
     }}>
-      <h1>Timesheets</h1>
+      <h1>Simple Timesheet App</h1>
+      <h3>Create a timesheet by populating the two lines of fields near the "Create Timesheet" button. Add additional line items under a timesheet with "Add Line Item" </h3>
       <form onSubmit={createTimesheet}>
         <input
           type="text"
@@ -123,7 +124,9 @@ function App() {
       />
       <ul>
         {timesheets.map((timesheet) => (
-          <li key={timesheet.id}>
+          <li key={timesheet.id} style={{
+            paddingBottom: '1ch'
+          }}>
             Description: <strong>{timesheet.description}</strong> | Rate: ${timesheet.rate} | {`Total Time: ${getTotalTimeForTimesheet(timesheet)} | Total Cost: $${getTotalCostForTimesheet(timesheet)}`}
 
             {timesheet.lineItems?.map((lineItem) => {
