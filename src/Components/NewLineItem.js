@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 
 const NewLineItem = (props) => {
     const [lineItemDate, setLineItemDate] = useState("");
@@ -12,12 +13,11 @@ const NewLineItem = (props) => {
             }}
             onSubmit={(event) => {
                 event.preventDefault();
-                fetch(`http://localhost:4000/timesheets/${timesheetID}/line-items`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ timesheet_id: timesheetID, date: lineItemDate, minutes: lineItemMinutes }),
+                axios.post(`http://localhost:4000/timesheets/${timesheetID}/line-items`, {
+                    timesheet_id: timesheetID,
+                    date: lineItemDate,
+                    minutes: lineItemMinutes,
                 })
-                    .then((response) => response.json())
                     .then(() => {
                         onUpdate();
                     })

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import NewLineItem from './Components/NewLineItem';
+import axios from 'axios';
 
 function App() {
   const [key, setKey] = useState(0);
@@ -10,13 +11,14 @@ function App() {
   const [rate, setRate] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:4000/timesheets")
-      .then((response) => response.json())
-      .then((timesheets) => {
+    axios.get("http://localhost:4000/timesheets")
+      .then((timesheetResponse) => {
+        const timesheets = timesheetResponse.data;
+
         const fetchAllLineItems = timesheets.map((timesheet) => {
-          return fetch(`http://localhost:4000/timesheets/${timesheet.id}/line-items`)
-            .then((response) => response.json())
-            .then((timesheetLineItems) => {
+          return axios.get(`http://localhost:4000/timesheets/${timesheet.id}/line-items`)
+            .then((lineItemsResponse) => {
+              const timesheetLineItems = lineItemsResponse.data
               timesheet.lineItems = timesheetLineItems;
               return { ...timesheet, timesheetLineItems }
             })
@@ -42,13 +44,13 @@ function App() {
       minutes: initialLineItemMinutes
     };
 
-    fetch("http://localhost:4000/timesheets", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ description, rate, firstLineItem }),
+    axios.post("http://localhost:4000/timesheets", {
+      description,
+      rate,
+      firstLineItem
     })
-      .then((response) => response.json())
-      .then((newTimesheet) => {
+      .then((timesheetResponse) => {
+        const newTimesheet = timesheetResponse.data;
         setTimesheets([...timesheets, newTimesheet]);
         setInitialLineItemDate("");
         setInitialLineItemMinutes("");
