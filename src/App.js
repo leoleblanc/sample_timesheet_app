@@ -4,6 +4,8 @@ import NewLineItem from './Components/NewLineItem';
 function App() {
   const [key, setKey] = useState(0);
   const [timesheets, setTimesheets] = useState([]);
+  const [initialLineItemDate, setInitialLineItemDate] = useState("")
+  const [initialLineItemMinutes, setInitialLineItemMinutes] = useState("")
   const [description, setDescription] = useState("");
   const [rate, setRate] = useState("");
 
@@ -42,13 +44,22 @@ function App() {
 
   const createTimesheet = (event) => {
     event.preventDefault();
+
+    const firstLineItem = {
+      date: initialLineItemDate,
+      minutes: initialLineItemMinutes
+    };
+
     fetch("http://localhost:4000/timesheets", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ description, rate }),
+      body: JSON.stringify({ description, rate, firstLineItem }),
     })
       .then((response) => response.json())
-      .then((newTimesheet) => setTimesheets([...timesheets, newTimesheet]))
+      .then((newTimesheet) => {
+        setTimesheets([...timesheets, newTimesheet]);
+        reloadComponent();
+      })
       .catch((error) => console.error("Error creating timesheet:", error));
   };
 
@@ -95,6 +106,17 @@ function App() {
         />
         <button type="submit">Create Timesheet</button>
       </form>
+      <input
+        type="date"
+        value={initialLineItemDate}
+        onChange={(event) => setInitialLineItemDate(event.target.value)}
+      />
+      <input
+        type="number"
+        placeholder="Minutes"
+        value={initialLineItemMinutes}
+        onChange={(event) => setInitialLineItemMinutes(event.target.value)}
+      />
       <ul>
         {timesheets.map((timesheet) => (
           <li key={timesheet.id}>

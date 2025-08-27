@@ -24,18 +24,60 @@ try {
 }
 
 server.post("/timesheets", (request, response) => {
-    const { description, rate } = request.body;
-    db.query(
-        "INSERT INTO timesheets (description, rate) VALUES (?, ?)",
-        [description, rate],
-        (error, result) => {
-            if (error) {
-                return response.status(500).json(error);
-            }
+    const { description, rate, firstLineItem } = request.body;
+    const { date, minutes } = firstLineItem;
 
-            return response.json({ id: result.insertId, description, rate });
+    db.beginTransaction((transactionError) => {
+        if (transactionError) {
+            console.log('Error occurred during transaction')
+            return response.status(500).json(transactionError);
         }
-    )
+
+        db.query(
+            "INSERT INTO timesheets (description, rate) VALUES (?, ?)",
+            [description, rate],
+            (timesheetInsertionError, timesheetInsertionResult) => {
+                if (timesheetInsertionError) {
+                    return db.rollback(() =>
+                        response.status(500).json(timesheetInsertionError)
+                    );
+                }
+
+                const timesheetId = timesheetInsertionResult.insertId;
+
+                db.query(
+                    "INSERT INTO line_items (timesheet_id, date, minutes) VALUES (?, ?, ?)",
+                    [timesheetId, date, minutes],
+                    (lineItemInsertionError, lineItemInsertionResult) => {
+                        if (lineItemInsertionError) {
+                            return db.rollback(() => {
+                                return response.status(500).json(lineItemInsertionError);
+                            });
+                        }
+
+                        db.commit((commitError) => {
+                            if (commitError) {
+                                return db.rollback(() => {
+                                    response.status(500).json(commitError);
+                                });
+                            }
+
+                            return response.json({
+                                id: timesheetId,
+                                description,
+                                rate,
+                                firstLineItem: {
+                                    id: lineItemInsertionResult.insertId,
+                                    date,
+                                    minutes,
+                                },
+                            });
+                        });
+                    }
+                );
+            }
+        )
+    })
 })
 
 server.post("/timesheets/:timesheet_id/line-items", (request, response) => {
