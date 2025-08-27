@@ -13,8 +13,10 @@ The test files included here are part of the create-react-app, I did not touch t
 
 1. Install NPM. I used version 10.9.2.
 2. Install MySQL. I used version 8.0.30 for MacOS on x86_64. Ensure the MySQL server is running.
+3. Within MySQL, create a database. This database's name will be used in the following steps.
+4. Clone this repository.
 
-All instructions below assume operation from within the root directory, the same level as package.json.
+All instructions below assume operation from within the root of this directory, the same level as package.json.
 1. Create a file named `.env`. Here, add two variables: DB_NAME=<YOUR_DB_NAME> and DB_PASSWORD=<YOUR_DB_PASSWORD>. These will be used by the server to connect to your MySQL database.
 2. run `npm install` to install all dependencies.
 3. run `npm run server` to start the server. This will initialize the tables for the database the first time the server boots up.
