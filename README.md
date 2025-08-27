@@ -5,7 +5,7 @@ Most of the scaffolding was left untouched, with changes in the following locati
  * all of /server
  * src/Components/NewLineItem.js
  * src/App.js
- * .gitignore (to prevent committing what should not be)
+ * .gitignore
 
 The test files included here are part of the create-react-app, I did not touch them.
 
