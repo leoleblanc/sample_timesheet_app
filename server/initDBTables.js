@@ -8,7 +8,7 @@ const initDBTables = (db) => {
     db.query(
         `CREATE TABLE IF NOT EXISTS timesheets (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            description TEXT,
+            description TEXT NOT NULL CHECK (LENGTH(description) > 0),
             rate DECIMAL(10,2) NOT NULL DEFAULT 1.00,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);`
