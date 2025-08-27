@@ -11,7 +11,6 @@ const NewLineItem = (props) => {
                 textIndent: '4ch'
             }}
             onSubmit={(event) => {
-                console.log(timesheetID)
                 event.preventDefault();
                 fetch(`http://localhost:4000/timesheets/${timesheetID}/line-items`, {
                     method: "POST",

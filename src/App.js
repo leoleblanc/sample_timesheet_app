@@ -58,6 +58,10 @@ function App() {
       .then((response) => response.json())
       .then((newTimesheet) => {
         setTimesheets([...timesheets, newTimesheet]);
+        setInitialLineItemDate("")
+        setInitialLineItemMinutes("")
+        setRate("")
+        setDescription("")
         reloadComponent();
       })
       .catch((error) => console.error("Error creating timesheet:", error));
@@ -88,8 +92,15 @@ function App() {
     return getTotalTimeForTimesheet * rate;
   }
 
+  const formatLineItemDate = (lineItemDate) => {
+    const date = new Date(lineItemDate);
+    return date.toLocaleDateString("en-CA");
+  }
+
   return (
-    <div key={key}>
+    <div key={key} style={{
+      paddingLeft: '1ch'
+    }}>
       <h1>Timesheets</h1>
       <form onSubmit={createTimesheet}>
         <input
@@ -106,6 +117,7 @@ function App() {
         />
         <button type="submit">Create Timesheet</button>
       </form>
+      {`Initial Line Item: `}
       <input
         type="date"
         value={initialLineItemDate}
@@ -125,7 +137,7 @@ function App() {
             {timesheet.lineItems?.map((lineItem) => {
               return (
                 <ul key={lineItem.id}>
-                  {lineItem.date} - Minutes: {lineItem.minutes}
+                  {formatLineItemDate(lineItem.date)} - Minutes: {lineItem.minutes}
                 </ul>
               )
             })
