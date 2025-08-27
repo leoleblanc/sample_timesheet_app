@@ -52,6 +52,31 @@ function App() {
       .catch((error) => console.error("Error creating timesheet:", error));
   };
 
+  const getTotalTimeForTimesheet = (timesheet) => {
+    const { lineItems } = timesheet;
+
+    if (!lineItems || lineItems.length === 0) {
+      return 0
+    }
+
+    const summedTime = lineItems.reduce((totalTime, lineItem) => totalTime + lineItem.minutes, 0);
+
+    // using below for efficiency; if time is calculated first, then cost calculation is much quicker for the function below
+    timesheet.totalTime = summedTime;
+
+    return summedTime;
+  }
+
+  const getTotalCostForTimesheet = (timesheet) => {
+    const { totalTime, rate } = timesheet;
+
+    if (totalTime) {
+      return totalTime * rate;
+    }
+
+    return getTotalTimeForTimesheet * rate;
+  }
+
   return (
     <div key={key}>
       <h1>Timesheets</h1>
@@ -73,7 +98,7 @@ function App() {
       <ul>
         {timesheets.map((timesheet) => (
           <li key={timesheet.id}>
-            <strong>{timesheet.description}</strong> - Rate: ${timesheet.rate}
+            Description: <strong>{timesheet.description}</strong> | Rate: ${timesheet.rate} | {`Total Time: ${getTotalTimeForTimesheet(timesheet)} | Total Cost: $${getTotalCostForTimesheet(timesheet)}`}
 
             {timesheet.lineItems?.map((lineItem) => {
               return (
